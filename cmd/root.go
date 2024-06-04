@@ -8,7 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/root-man/quiz/dummy"
+	"github.com/root-man/quiz/config"
+	"github.com/root-man/quiz/runner"
 	"github.com/spf13/cobra"
 )
 
@@ -35,7 +36,14 @@ var rootCmd = &cobra.Command{
 
 		timeout := time.Duration(timer) * time.Second
 
-		dummy.RunQuiz(dummy.NewOpts(dummy.WithProblemsFile(filepath), dummy.WithShuffle(shuffle), dummy.WithTimer(timeout)))
+		config := config.NewConfig(
+			config.WithProblemsFile(filepath),
+			config.WithShuffle(shuffle),
+			config.WithTimer(timeout),
+		)
+
+		r := runner.New(config)
+		r.Run()
 	},
 }
 
